@@ -4,15 +4,63 @@ import streamlit as st
 import re
 import uuid
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+SESSION_TIMEOUT_MINUTES = 30
 
 def get_image_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-st.set_page_config(page_title="Raza Herbal Dawakhana", layout="wide")
+# -----------------------------
+# AUTH
+# -----------------------------
+def check_timeout():
+    if "last_activity" in st.session_state:
+        elapsed = datetime.now() - st.session_state.last_activity
+        if elapsed > timedelta(minutes=SESSION_TIMEOUT_MINUTES):
+            st.session_state.logged_in = False
+            st.session_state.last_activity = None
+
+def reset_timer():
+    st.session_state.last_activity = datetime.now()
+
+def show_login():
+    _, col, _ = st.columns([1, 1, 1])
+    with col:
+        logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
+        st.markdown(
+            f"<div style='text-align:center'><img src='data:image/png;base64,{logo_b64}' width='130'/><h2>Raza Herbal Dawakhana</h2></div>",
+            unsafe_allow_html=True
+        )
+        st.markdown("<br>", unsafe_allow_html=True)
+        username = st.text_input("Username", key="login_user")
+        password = st.text_input("Password", type="password", key="login_pass")
+        if st.button("🔐 Login"):
+            valid_user = st.secrets["auth"]["username"]
+            valid_pass = st.secrets["auth"]["password"]
+            if username == valid_user and password == valid_pass:
+                st.session_state.logged_in = True
+                st.session_state.last_activity = datetime.now()
+                st.rerun()
+            else:
+                st.error("❌ Invalid username or password")
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+check_timeout()
+
+if not st.session_state.logged_in:
+    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
+    show_login()
+    st.stop()
+else:
+    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="wide")
+
+reset_timer()
 
 logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
 st.markdown(
