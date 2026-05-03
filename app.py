@@ -4,13 +4,14 @@ import streamlit as st
 import re
 import uuid
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import gspread
 from google.oauth2.service_account import Credentials
+import streamlit_authenticator as stauth
 
+IST = ZoneInfo("Asia/Kolkata")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-SESSION_TIMEOUT_MINUTES = 30
 
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
@@ -32,17 +33,26 @@ def get_image_base64(path):
 # -----------------------------
 # AUTH
 # -----------------------------
-def check_timeout():
-    if "last_activity" in st.session_state:
-        elapsed = datetime.now() - st.session_state.last_activity
-        if elapsed > timedelta(minutes=SESSION_TIMEOUT_MINUTES):
-            st.session_state.logged_in = False
-            st.session_state.last_activity = None
+auth_config = {
+    "credentials": {
+        "usernames": {
+            "admin": {
+                "name": dict(st.secrets["auth"]["credentials"]["usernames"]["admin"])["name"],
+                "password": dict(st.secrets["auth"]["credentials"]["usernames"]["admin"])["password"]
+            }
+        }
+    }
+}
 
-def reset_timer():
-    st.session_state.last_activity = datetime.now()
+authenticator = stauth.Authenticate(
+    auth_config["credentials"],
+    st.secrets["auth"]["cookie_name"],
+    st.secrets["auth"]["cookie_key"],
+    st.secrets["auth"]["cookie_expiry_days"]
+)
 
-def show_login():
+if not st.session_state.get("authentication_status"):
+    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
     _, col, _ = st.columns([1, 1, 1])
     with col:
         logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
@@ -51,31 +61,12 @@ def show_login():
             unsafe_allow_html=True
         )
         st.markdown("<br>", unsafe_allow_html=True)
-        username = st.text_input("Username", key="login_user")
-        password = st.text_input("Password", type="password", key="login_pass")
-        if st.button("🔐 Login"):
-            valid_user = st.secrets["auth"]["username"]
-            valid_pass = st.secrets["auth"]["password"]
-            if username == valid_user and password == valid_pass:
-                st.session_state.logged_in = True
-                st.session_state.last_activity = datetime.now()
-                st.rerun()
-            else:
-                st.error("❌ Invalid username or password")
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-check_timeout()
-
-if not st.session_state.logged_in:
-    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
-    show_login()
+        authenticator.login(location="main")
+        if st.session_state.get("authentication_status") is False:
+            st.error("❌ Invalid username or password")
     st.stop()
 else:
     st.set_page_config(page_title="Raza Herbal Dawakhana", layout="wide")
-
-reset_timer()
 
 logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
 st.markdown(
@@ -258,7 +249,7 @@ if st.button("✅ Submit Order"):
         for e in errors:
             st.write(f"- {e}")
     else:
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        timestamp = datetime.now(IST).strftime("%Y%m%d%H%M%S")
         short_uuid = str(uuid.uuid4())[:6]
         order_id = f"ORD_{timestamp}_{short_uuid}"
 
@@ -285,13 +276,13 @@ if st.button("✅ Submit Order"):
         orders_df.to_csv(
             orders_file,
             mode='a',
-            header=not os.path.exists(orders_file),
+            header=not os.path.exists(orders_file) or os.path.getsize(orders_file) == 0,
             index=False
         )
         order_items_df.to_csv(
             order_items_file,
             mode='a',
-            header=not os.path.exists(order_items_file),
+            header=not os.path.exists(order_items_file) or os.path.getsize(order_items_file) == 0,
             index=False
         )
 

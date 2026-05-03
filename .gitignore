@@ -4,3 +4,4 @@ __pycache__/
 .env
 *.json
 .streamlit/
+process_data.py
