@@ -8,10 +8,10 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 import gspread
 from google.oauth2.service_account import Credentials
-import streamlit_authenticator as stauth
 
 IST = ZoneInfo("Asia/Kolkata")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+AUTH_TOKEN = "rhd-login-2024"
 
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
@@ -33,26 +33,7 @@ def get_image_base64(path):
 # -----------------------------
 # AUTH
 # -----------------------------
-auth_config = {
-    "credentials": {
-        "usernames": {
-            "admin": {
-                "name": dict(st.secrets["auth"]["credentials"]["usernames"]["admin"])["name"],
-                "password": dict(st.secrets["auth"]["credentials"]["usernames"]["admin"])["password"]
-            }
-        }
-    }
-}
-
-authenticator = stauth.Authenticate(
-    auth_config["credentials"],
-    st.secrets["auth"]["cookie_name"],
-    st.secrets["auth"]["cookie_key"],
-    st.secrets["auth"]["cookie_expiry_days"]
-)
-
-if not st.session_state.get("authentication_status"):
-    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
+def show_login():
     _, col, _ = st.columns([1, 1, 1])
     with col:
         logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
@@ -61,9 +42,20 @@ if not st.session_state.get("authentication_status"):
             unsafe_allow_html=True
         )
         st.markdown("<br>", unsafe_allow_html=True)
-        authenticator.login(location="main")
-        if st.session_state.get("authentication_status") is False:
-            st.error("❌ Invalid username or password")
+        username = st.text_input("Username", key="login_user")
+        password = st.text_input("Password", type="password", key="login_pass")
+        if st.button("🔐 Login"):
+            valid_user = st.secrets["auth"]["username"]
+            valid_pass = st.secrets["auth"]["password"]
+            if username == valid_user and password == valid_pass:
+                st.query_params["auth"] = AUTH_TOKEN
+                st.rerun()
+            else:
+                st.error("❌ Invalid username or password")
+
+if st.query_params.get("auth") != AUTH_TOKEN:
+    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
+    show_login()
     st.stop()
 else:
     st.set_page_config(page_title="Raza Herbal Dawakhana", layout="wide")
