@@ -38,7 +38,7 @@ def show_login():
     with col:
         logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
         st.markdown(
-            f"<div style='text-align:center'><img src='data:image/png;base64,{logo_b64}' width='130'/><h2>Raza Herbal Dawakhana</h2></div>",
+            f"<div style='text-align:center'><img src='data:image/png;base64,{logo_b64}' width='130'/><h2>Raza Herbal Shifakhana</h2></div>",
             unsafe_allow_html=True
         )
         st.markdown("<br>", unsafe_allow_html=True)
@@ -54,18 +54,18 @@ def show_login():
                 st.error("❌ Invalid username or password")
 
 if st.query_params.get("auth") != AUTH_TOKEN:
-    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="centered")
+    st.set_page_config(page_title="Raza Herbal Shifakhana", layout="centered")
     show_login()
     st.stop()
 else:
-    st.set_page_config(page_title="Raza Herbal Dawakhana", layout="wide")
+    st.set_page_config(page_title="Raza Herbal Shifakhana", layout="wide")
 
 logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
 st.markdown(
     f"""
     <div style='text-align:center'>
         <img src='data:image/png;base64,{logo_b64}' width='160'/>
-        <h2 style='margin-top:8px'>Raza Herbal Dawakhana</h2>
+        <h2 style='margin-top:8px'>Raza Herbal Shifakhana</h2>
     </div>
     """,
     unsafe_allow_html=True

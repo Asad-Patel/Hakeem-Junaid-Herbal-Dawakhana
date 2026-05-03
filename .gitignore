@@ -5,3 +5,7 @@ __pycache__/
 *.json
 .streamlit/
 process_data.py
+generate_synthetic.py
+configs/
+testing.ipynb
+logs/
