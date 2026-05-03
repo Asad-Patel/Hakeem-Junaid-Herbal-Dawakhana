@@ -5,10 +5,25 @@ import re
 import uuid
 import pandas as pd
 from datetime import datetime, timedelta
+import gspread
+from google.oauth2.service_account import Credentials
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 SESSION_TIMEOUT_MINUTES = 30
+
+SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
+@st.cache_resource
+def get_sheets():
+    creds = Credentials.from_service_account_info(
+        dict(st.secrets["gcp_service_account"]),
+        scopes=SCOPES
+    )
+    client = gspread.authorize(creds)
+    spreadsheet = client.open_by_key(st.secrets["gsheets"]["sheet_id"])
+    return spreadsheet.worksheet("orders"), spreadsheet.worksheet("order_items")
+
 
 def get_image_base64(path):
     with open(path, "rb") as f:
@@ -280,8 +295,20 @@ if st.button("✅ Submit Order"):
             index=False
         )
 
+        try:
+            ws_orders, ws_items = get_sheets()
+            if ws_orders.row_count == 0 or ws_orders.cell(1, 1).value is None:
+                ws_orders.append_row(ORDERS_SCHEMA)
+            if ws_items.row_count == 0 or ws_items.cell(1, 1).value is None:
+                ws_items.append_row(ORDER_ITEMS_SCHEMA)
+            ws_orders.append_row([str(v) for v in orders_df.iloc[0]])
+            for _, row in order_items_df.iterrows():
+                ws_items.append_row([str(v) for v in row])
+        except Exception as e:
+            st.warning(f"⚠️ Sheets save failed: {e}")
+
         st.success("✅ Order Submitted & Data Saved!")
-        st.info("📁 Data saved to data/orders.csv and data/order_items.csv")
+        st.info("📁 Data saved to CSV and Google Sheets")
 
         st.write("### Order Data")
         st.json(orders_data)
