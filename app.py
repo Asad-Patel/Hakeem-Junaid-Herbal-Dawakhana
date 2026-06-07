@@ -12,6 +12,7 @@ from google.oauth2.service_account import Credentials
 IST = ZoneInfo("Asia/Kolkata")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AUTH_TOKEN = "rhd-login-2024"
+LOGIN_ENABLED = False  # True karo jab login chahiye
 
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
@@ -53,7 +54,7 @@ def show_login():
             else:
                 st.error("❌ Invalid username or password")
 
-if st.query_params.get("auth") != AUTH_TOKEN:
+if LOGIN_ENABLED and st.query_params.get("auth") != AUTH_TOKEN:
     st.set_page_config(page_title="Raza Herbal Shifakhana", layout="centered")
     show_login()
     st.stop()
