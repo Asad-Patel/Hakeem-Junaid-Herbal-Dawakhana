@@ -116,7 +116,9 @@ st.components.v1.html(
                 e.preventDefault();
                 const selects = getSelectboxes();
                 if (selects.length > 0) {
-                    selects[0].click();
+                    const inp = selects[0].querySelector('input');
+                    if (inp) { inp.focus(); inp.click(); }
+                    else selects[0].click();
                 }
                 return;
             }
