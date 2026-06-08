@@ -60,12 +60,15 @@ if LOGIN_ENABLED and st.query_params.get("auth") != AUTH_TOKEN:
     st.stop()
 else:
     st.set_page_config(page_title="Raza Herbal Shifakhana", layout="wide")
+
 st.markdown("""
 <style>
-[data-testid="stHorizontalBlock"] hr, .stDivider hr {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
+div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stVerticalBlock"] > div {
+    gap: 0rem !important;
 }
+.stDivider { margin-top: 2px !important; margin-bottom: 2px !important; }
+.stSubheader, .stHeader { margin-top: 4px !important; margin-bottom: 0px !important; }
 </style>
 """, unsafe_allow_html=True)
 
