@@ -169,35 +169,34 @@ for pid in st.session_state.products:
         st.number_input("Discount Amount (₹)", min_value=0.0, key=f"disc_{pid}")
 
     with col5:
-        st.write("")
-        st.write("")
-        if st.button("❌ Remove", key=f"remove_{pid}"):
+        st.markdown("<div style='margin-top:28px'>", unsafe_allow_html=True)
+        if st.button("❌", key=f"remove_{pid}", help="Remove product"):
             to_remove = pid
+        st.markdown("</div>", unsafe_allow_html=True)
 
 if to_remove:
     st.session_state.products.remove(to_remove)
     st.rerun()
 
-if st.button("➕ Add Product"):
-    st.session_state.products.append(str(uuid.uuid4()))
-    st.session_state["scroll_to_bottom"] = True
-    st.rerun()
-
 if st.session_state.get("scroll_to_bottom"):
     st.session_state["scroll_to_bottom"] = False
-    last_pid = st.session_state.products[-1]
     st.components.v1.html(
-        f"""
+        """
         <script>
-            window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({{top: 999999, behavior: 'smooth'}});
-            setTimeout(() => {{
+            window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({top: 999999, behavior: 'smooth'});
+            setTimeout(() => {
                 const inputs = window.parent.document.querySelectorAll('input[type="text"]');
                 if (inputs.length > 0) inputs[inputs.length - 1].focus();
-            }}, 500);
+            }, 500);
         </script>
         """,
         height=0
     )
+
+if st.button("➕ Add Product"):
+    st.session_state.products.append(str(uuid.uuid4()))
+    st.session_state["scroll_to_bottom"] = True
+    st.rerun()
 
 # SUBMIT
 if st.button("✅ Submit Order"):
