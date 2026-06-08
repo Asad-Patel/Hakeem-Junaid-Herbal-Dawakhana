@@ -74,6 +74,7 @@ st.markdown(
 )
 
 st.subheader("🧾 Customer Order Entry")
+st.divider()
 
 st.components.v1.html(
     """
@@ -220,6 +221,7 @@ with col3:
 
 # ORDER INFO
 st.header("🛒 Order Info")
+st.divider()
 
 col4, col5 = st.columns(2)
 
@@ -241,12 +243,14 @@ with col5:
 # PRODUCTS
 
 st.header("📦 Products")
+st.divider()
 
 to_remove = None
 
 for pid in st.session_state.products:
     idx = st.session_state.products.index(pid)
     st.subheader(f"Product {idx + 1}")
+    st.divider()
 
     col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
 
