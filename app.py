@@ -131,8 +131,11 @@ st.components.v1.html(
 
             const selects = getSelectboxes();
             setTimeout(() => {
-                if (selects.length > 1) {
-                    selects[1].click();
+                const freshSelects = getSelectboxes();
+                if (freshSelects.length > 1) {
+                    const inp = freshSelects[1].querySelector('input');
+                    if (inp) { inp.focus(); inp.click(); }
+                    else freshSelects[1].click();
                 }
             }, 300);
         }, true);
