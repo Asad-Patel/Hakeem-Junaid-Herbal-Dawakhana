@@ -63,12 +63,18 @@ else:
 
 st.markdown("""
 <style>
-div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlockBorderWrapper"],
-div[data-testid="stVerticalBlock"] > div {
-    gap: 0rem !important;
+/* divider gap */
+[data-testid="stMarkdownContainer"] hr {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
 }
-.stDivider { margin-top: 2px !important; margin-bottom: 2px !important; }
-.stSubheader, .stHeader { margin-top: 4px !important; margin-bottom: 0px !important; }
+/* all block gaps */
+.element-container {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
