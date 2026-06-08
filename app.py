@@ -90,7 +90,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.subheader("🧾 Customer Order Entry")
+st.subheader("**🧾 Customer Order Entry**")
 st.divider()
 
 st.components.v1.html(
@@ -240,7 +240,7 @@ with col3:
         st.warning("Only digits allowed (10 max)")
 
 # ORDER INFO
-st.header("🛒 Order Info")
+st.header("**🛒 Order Info**")
 st.divider()
 
 col4, col5 = st.columns(2)
@@ -262,7 +262,7 @@ with col5:
  
 # PRODUCTS
 
-st.header("📦 Products")
+st.header("**📦 Products**")
 st.divider()
 
 to_remove = None
