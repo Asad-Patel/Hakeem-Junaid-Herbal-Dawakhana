@@ -77,10 +77,57 @@ st.subheader("🧾 Customer Order Entry")
 st.components.v1.html(
     """
     <script>
-        setTimeout(() => {
-            const inputs = window.parent.document.querySelectorAll('input[type="text"]');
-            if (inputs.length > 0) inputs[0].focus();
-        }, 300);
+    setTimeout(() => {
+        const doc = window.parent.document;
+
+        function getInputs() {
+            return Array.from(doc.querySelectorAll('input[type="text"], input[type="number"]'));
+        }
+
+        function getSelectboxes() {
+            return Array.from(doc.querySelectorAll('[data-baseweb="select"]'));
+        }
+
+        doc.addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter') return;
+
+            const active = doc.activeElement;
+            const inputs = getInputs();
+            const idx = inputs.indexOf(active);
+
+            // Customer Name (0) -> Age (1)
+            // Age (1) -> Phone (2)
+            if (idx === 0 || idx === 1) {
+                e.preventDefault();
+                inputs[idx + 1].focus();
+                return;
+            }
+
+            // Phone (2) -> Order Source dropdown
+            if (idx === 2) {
+                e.preventDefault();
+                const selects = getSelectboxes();
+                if (selects.length > 0) {
+                    selects[0].click();
+                }
+                return;
+            }
+        }, true);
+
+        // Order Source select -> Payment Method dropdown
+        doc.addEventListener('click', function(e) {
+            const option = e.target.closest('[role="option"]');
+            if (!option) return;
+
+            const selects = getSelectboxes();
+            setTimeout(() => {
+                if (selects.length > 1) {
+                    selects[1].click();
+                }
+            }, 300);
+        }, true);
+
+    }, 500);
     </script>
     """,
     height=0
