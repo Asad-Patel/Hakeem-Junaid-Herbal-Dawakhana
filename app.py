@@ -96,6 +96,13 @@ st.components.v1.html(
             }
         }, 600);
 
+        // Select all on focus for number inputs
+        doc.addEventListener('focus', function(e) {
+            if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
+                e.target.select();
+            }
+        }, true);
+
         doc.addEventListener('keydown', function(e) {
             if (e.key !== 'Enter') return;
 
@@ -201,7 +208,7 @@ with col1:
         st.warning("Only alphabets allowed")
 
 with col2:
-    age = st.number_input("Age", min_value=1, step=1, key=f"age_{st.session_state.form_key}")
+    age = st.number_input("Age", min_value=1, step=1, value=18, key=f"age_{st.session_state.form_key}")
 
 with col3:
     raw_phone = st.text_input("Phone Number", key=f"phone_{st.session_state.form_key}")
