@@ -88,6 +88,14 @@ st.components.v1.html(
             return Array.from(doc.querySelectorAll('[data-baseweb="select"]'));
         }
 
+        // Phone field numeric keypad
+        setTimeout(() => {
+            const inputs = getInputs();
+            if (inputs.length > 2) {
+                inputs[2].setAttribute('inputmode', 'numeric');
+            }
+        }, 600);
+
         doc.addEventListener('keydown', function(e) {
             if (e.key !== 'Enter') return;
 
