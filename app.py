@@ -73,7 +73,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("<div style='margin-top:-20px'>", unsafe_allow_html=True)
 st.subheader("🧾 Customer Order Entry")
+st.markdown("</div>", unsafe_allow_html=True)
 
 st.components.v1.html(
     """
