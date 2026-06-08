@@ -246,7 +246,7 @@ for pid in st.session_state.products:
     idx = st.session_state.products.index(pid)
     st.subheader(f"Product {idx + 1}")
 
-    col1, col2, col3, col4, col5 = st.columns([3, 1, 1, 1, 1])
+    col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
 
     with col1:
         raw_pname = st.text_input(f"Product Name", key=f"name_{pid}")
@@ -263,11 +263,10 @@ for pid in st.session_state.products:
     with col4:
         st.number_input("Discount Amount (₹)", min_value=0.0, key=f"disc_{pid}")
 
-    with col5:
-        st.markdown("<div style='margin-top:2px'>", unsafe_allow_html=True)
-        if st.button("❌ Remove", key=f"remove_{pid}"):
-            to_remove = pid
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:2px'>", unsafe_allow_html=True)
+    if st.button("❌ Remove", key=f"remove_{pid}", use_container_width=True):
+        to_remove = pid
+    st.markdown("</div>", unsafe_allow_html=True)
 
 if to_remove:
     st.session_state.products.remove(to_remove)
