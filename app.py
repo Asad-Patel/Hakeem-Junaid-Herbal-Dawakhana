@@ -142,9 +142,12 @@ st.components.v1.html(
                 e.preventDefault();
                 const selects = getSelectboxes();
                 if (selects.length > 0) {
-                    const inp = selects[0].querySelector('input');
-                    if (inp) { inp.focus(); inp.click(); }
-                    else selects[0].click();
+                    selects[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+                    setTimeout(() => {
+                        const inp = selects[0].querySelector('input');
+                        if (inp) { inp.focus(); inp.click(); }
+                        else selects[0].click();
+                    }, 400);
                 }
                 return;
             }
