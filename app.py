@@ -122,6 +122,17 @@ st.components.v1.html(
                 }
                 return;
             }
+
+            // Product fields: Name, Qty, Price, Discount -> next field or next product
+            if (idx >= 3) {
+                e.preventDefault();
+                if (idx + 1 < inputs.length) {
+                    inputs[idx + 1].focus();
+                } else {
+                    active.blur();
+                }
+                return;
+            }
         }, true);
 
         // Order Source select -> Payment Method dropdown
