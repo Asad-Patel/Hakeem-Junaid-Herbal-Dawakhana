@@ -64,7 +64,7 @@ else:
 logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
 st.markdown(
     f"""
-    <div style='display:flex; align-items:center; gap:12px; margin-top:-42px; margin-bottom:4px'>
+    <div style='display:flex; align-items:center; gap:12px; margin-top:-38px; margin-bottom:4px'>
         <img src='data:image/png;base64,{logo_b64}' width='50'/>
         <span style='font-size:25px; font-weight:600; line-height:1'>Raza Herbal Shifakhana</span>
     </div>
