@@ -85,7 +85,7 @@ st.markdown(
         <img src='data:image/png;base64,{logo_b64}' width='50'/>
         <span style='font-size:25px; font-weight:600; line-height:1'>Raza Herbal Shifakhana</span>
     </div>
-    <hr style='margin-top:8px; margin-bottom:0px; border:2px solid currentColor'/>
+    <hr style='margin-top:14px; margin-bottom:0px; border:2px solid currentColor'/>
     """,
     unsafe_allow_html=True
 )
