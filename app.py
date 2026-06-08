@@ -170,7 +170,7 @@ for pid in st.session_state.products:
 
     with col5:
         st.markdown("<div style='margin-top:4px'>", unsafe_allow_html=True)
-        if st.button("❌", key=f"remove_{pid}", help="Remove product"):
+        if st.button("❌ Remove", key=f"remove_{pid}"):
             to_remove = pid
         st.markdown("</div>", unsafe_allow_html=True)
 
