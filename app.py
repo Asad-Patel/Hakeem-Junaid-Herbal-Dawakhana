@@ -66,7 +66,7 @@ st.markdown(
     f"""
     <div style='display:flex; align-items:center; gap:12px; margin-top:-60px; margin-bottom:4px'>
         <img src='data:image/png;base64,{logo_b64}' width='50'/>
-        <span style='font-size:50px; font-weight:600; line-height:1'>Raza Herbal Shifakhana</span>
+        <span style='font-size:25px; font-weight:600; line-height:1'>Raza Herbal Shifakhana</span>
     </div>
     """,
     unsafe_allow_html=True
