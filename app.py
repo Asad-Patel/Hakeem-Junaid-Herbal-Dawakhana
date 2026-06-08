@@ -142,9 +142,6 @@ st.components.v1.html(
                 }, 300);
             } else {
                 waitingForPayment = false;
-                setTimeout(() => {
-                    window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({top: 999999, behavior: 'smooth'});
-                }, 300);
             }
         }, true);
 
