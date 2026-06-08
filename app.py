@@ -263,8 +263,9 @@ for pid in st.session_state.products:
     with col4:
         st.number_input("Discount Amount (₹)", min_value=0.0, key=f"disc_{pid}")
 
+    remove_label = f"❌ Remove {pname.title() if pname.strip() else f'Product {idx + 1}'}"
     st.markdown("<div style='margin-top:2px'>", unsafe_allow_html=True)
-    if st.button("❌ Remove", key=f"remove_{pid}", use_container_width=True):
+    if st.button(remove_label, key=f"remove_{pid}", use_container_width=True):
         to_remove = pid
     st.markdown("</div>", unsafe_allow_html=True)
 
