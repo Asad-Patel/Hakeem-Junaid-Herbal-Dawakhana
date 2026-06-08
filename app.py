@@ -74,6 +74,18 @@ st.markdown(
 
 st.subheader("🧾 Customer Order Entry")
 
+st.components.v1.html(
+    """
+    <script>
+        setTimeout(() => {
+            const inputs = window.parent.document.querySelectorAll('input[type="text"]');
+            if (inputs.length > 0) inputs[0].focus();
+        }, 300);
+    </script>
+    """,
+    height=0
+)
+
 # FILE PATHS & SCHEMA
 orders_file      = os.path.join(BASE_DIR, "data", "orders.csv")
 order_items_file = os.path.join(BASE_DIR, "data", "order_items.csv")
