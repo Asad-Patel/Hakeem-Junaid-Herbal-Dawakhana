@@ -137,6 +137,7 @@ st.components.v1.html(
                     inputs[idx + 1].focus();
                 } else {
                     active.blur();
+                    window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({top: 999999, behavior: 'smooth'});
                 }
                 return;
             }
