@@ -125,19 +125,27 @@ st.components.v1.html(
         }, true);
 
         // Order Source select -> Payment Method dropdown
+        let waitingForPayment = false;
         doc.addEventListener('click', function(e) {
             const option = e.target.closest('[role="option"]');
             if (!option) return;
 
-            const selects = getSelectboxes();
-            setTimeout(() => {
-                const freshSelects = getSelectboxes();
-                if (freshSelects.length > 1) {
-                    const inp = freshSelects[1].querySelector('input');
-                    if (inp) { inp.focus(); inp.click(); }
-                    else freshSelects[1].click();
-                }
-            }, 300);
+            if (!waitingForPayment) {
+                waitingForPayment = true;
+                setTimeout(() => {
+                    const freshSelects = getSelectboxes();
+                    if (freshSelects.length > 1) {
+                        const inp = freshSelects[1].querySelector('input');
+                        if (inp) { inp.focus(); inp.click(); }
+                        else freshSelects[1].click();
+                    }
+                }, 300);
+            } else {
+                waitingForPayment = false;
+                setTimeout(() => {
+                    window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({top: 999999, behavior: 'smooth'});
+                }, 300);
+            }
         }, true);
 
     }, 500);
