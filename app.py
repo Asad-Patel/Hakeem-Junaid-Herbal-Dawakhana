@@ -193,13 +193,13 @@ if st.session_state.get("scroll_to_bottom"):
         height=0
     )
 
-if st.button("➕ Add Product"):
+if st.button("➕ Add Product", use_container_width=True):
     st.session_state.products.append(str(uuid.uuid4()))
     st.session_state["scroll_to_bottom"] = True
     st.rerun()
 
 # SUBMIT
-if st.button("✅ Submit Order"):
+if st.button("✅ Submit Order", use_container_width=True):
 
     errors = []
 
