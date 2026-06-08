@@ -73,7 +73,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<div style='margin-top:-20px'><h3>🧾 Customer Order Entry</h3><hr style='margin-top:0; margin-bottom:0; border:1px solid currentColor'/></div>", unsafe_allow_html=True)
+st.subheader("🧾 Customer Order Entry")
 
 st.components.v1.html(
     """
@@ -219,7 +219,7 @@ with col3:
         st.warning("Only digits allowed (10 max)")
 
 # ORDER INFO
-st.markdown("<h2>🛒 Order Info</h2><hr style='margin-top:-12px; margin-bottom:0; border:1px solid currentColor'/>", unsafe_allow_html=True)
+st.header("🛒 Order Info")
 
 col4, col5 = st.columns(2)
 
@@ -240,13 +240,13 @@ with col5:
  
 # PRODUCTS
 
-st.markdown("<h2>📦 Products</h2><hr style='margin-top:-12px; margin-bottom:0; border:1px solid currentColor'/>", unsafe_allow_html=True)
+st.header("📦 Products")
 
 to_remove = None
 
 for pid in st.session_state.products:
     idx = st.session_state.products.index(pid)
-    st.markdown(f"<h3>Product {idx + 1}</h3><hr style='margin-top:-12px; margin-bottom:0; border:1px solid currentColor'/>", unsafe_allow_html=True)
+    st.subheader(f"Product {idx + 1}")
 
     col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
 
