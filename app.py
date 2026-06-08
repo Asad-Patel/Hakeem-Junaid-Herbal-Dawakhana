@@ -60,6 +60,14 @@ if LOGIN_ENABLED and st.query_params.get("auth") != AUTH_TOKEN:
     st.stop()
 else:
     st.set_page_config(page_title="Raza Herbal Shifakhana", layout="wide")
+st.markdown("""
+<style>
+[data-testid="stHorizontalBlock"] hr, .stDivider hr {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 logo_b64 = get_image_base64(os.path.join(BASE_DIR, "logo", "Raza Herbal Dawakhana 3.png"))
 st.markdown(
