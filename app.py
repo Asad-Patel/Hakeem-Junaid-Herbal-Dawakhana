@@ -145,10 +145,6 @@ with col5:
 
 st.header("📦 Products")
 
-if st.button("➕ Add Product"):
-    st.session_state.products.append(str(uuid.uuid4()))
-    st.rerun()
-
 to_remove = None
 
 for pid in st.session_state.products:
@@ -181,6 +177,27 @@ for pid in st.session_state.products:
 if to_remove:
     st.session_state.products.remove(to_remove)
     st.rerun()
+
+if st.button("➕ Add Product"):
+    st.session_state.products.append(str(uuid.uuid4()))
+    st.session_state["scroll_to_bottom"] = True
+    st.rerun()
+
+if st.session_state.get("scroll_to_bottom"):
+    st.session_state["scroll_to_bottom"] = False
+    last_pid = st.session_state.products[-1]
+    st.components.v1.html(
+        f"""
+        <script>
+            window.parent.document.querySelector('[data-testid="stAppViewContainer"]').scrollTo({{top: 999999, behavior: 'smooth'}});
+            setTimeout(() => {{
+                const inputs = window.parent.document.querySelectorAll('input[type="text"]');
+                if (inputs.length > 0) inputs[inputs.length - 1].focus();
+            }}, 500);
+        </script>
+        """,
+        height=0
+    )
 
 # SUBMIT
 if st.button("✅ Submit Order"):
